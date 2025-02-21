@@ -111,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
                 validationIntent.putExtra("age", input_age.getText().toString());
                 validationIntent.putExtra("grade", finalGrade);
 
+                validationIntent.putExtra("Lario", finalGrade.contains("5. Very good."));
+
                 startActivity(validationIntent);
             }
         });
