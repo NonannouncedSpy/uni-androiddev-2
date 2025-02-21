@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">Uni_androiddev_2</string>
+    <string name="app_name">Larioware 2</string>
+    <string name="main_title"><b>Welcome to Larioware 2.</b></string>
+    <string name="main_hint_fio">Your name</string>
+    <string name="main_hint_group">Your group</string>
+    <string name="main_hint_age">Your age</string>
+    <string name="main_hint_grade">Your desired grade</string>
+    <string name="main_button">Validate and proceed</string>
 </resources>
