@@ -20,13 +20,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         Log.w(APP_TAG, "Larioware 2 initialized; prepare for Lario");
 
@@ -39,99 +33,96 @@ public class MainActivity extends AppCompatActivity {
         final EditText input_grade = findViewById(R.id.main_input_grade);
 
         // Button click processing
-        valButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String fio = input_fio.getText().toString();
-                final String group = input_group.getText().toString();
-                final String age = input_age.getText().toString();
-                final String grade = input_grade.getText().toString();
+        valButton.setOnClickListener(v -> {
+            final String fio = input_fio.getText().toString();
+            final String group = input_group.getText().toString();
+            final String age = input_age.getText().toString();
+            final String grade = input_grade.getText().toString();
 
-                Log.d(APP_TAG, "fio=" + fio + " group=" + group + " age=" + age + " grade=" + grade);
+            Log.d(APP_TAG, "fio=" + fio + " group=" + group + " age=" + age + " grade=" + grade);
 
-                // Make sure all fields are filled
-                if (fio.isEmpty() || group.isEmpty() || age.isEmpty() || grade.isEmpty()) {
-                    Toast.makeText(getApplicationContext(),
-                            "All fields are mandatory >:(",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                // Group should follow a specific pattern of "AAAA-00-00"
-                if (! group.matches("[A-ZА-Я]{4}-[0-9]{2}-[0-9]{2}")) {
-                    // Yell at user otherwise
-                    Toast.makeText(getApplicationContext(),
-                            "Group doesn't match pattern \"AAAA-00-00\"",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                String finalGrade;
-                // Check grade and do some tomfoolery
-                // (i dont like this way of doing multi-case single case, but oh well cant use higher jave)
-                switch (grade.toLowerCase()) {
-                    case "5":
-                    case "a":
-                    case "otl":
-                    case "otlichno":
-                    case "отл":
-                    case "отлично": {
-                        finalGrade = "2, don't be full of yourself >:(";
-                        break;
-                    }
-
-                    case "4":
-                    case "b":
-                    case "khor":
-                    case "khorosho":
-                    case "хор":
-                    case "хорошо": {
-                        finalGrade = "4, good job :)";
-                        break;
-                    }
-
-                    case "3":
-                    case "c":
-                    case "udovl":
-                    case "udovletvoritelno":
-                    case "удовл":
-                    case "удовлетворительно": {
-                        finalGrade = "3, slightly less good :)";
-                        break;
-                    }
-
-                    case "2":
-                    case "f":
-                    case "neud":
-                    case "neudovletvoritelno":
-                    case "неуд":
-                    case "неудовлетворительно": {
-                        finalGrade = "2. You will now be expelled. Prepare.";
-                        break;
-                    }
-
-                    case "lario": {
-                        finalGrade = "5. Very good. You are a worthy disciple.\nAwait for operation 'Larioware 3'.";
-                        break;
-                    }
-
-                    default: {
-                        finalGrade = "2, voice your requests better next time >:(";
-                        break;
-                    }
-                }
-
-                // Finally, switch activity and pass all the data
-                Intent validationIntent = new Intent(getApplicationContext(), ValidateActivity.class);
-                validationIntent.putExtra("fio", fio);
-                validationIntent.putExtra("group", group);
-                validationIntent.putExtra("age", age);
-                validationIntent.putExtra("grade", finalGrade);
-
-                validationIntent.putExtra("Lario", finalGrade.contains("5. Very good."));
-
-                startActivity(validationIntent);
+            // Make sure all fields are filled
+            if (fio.isEmpty() || group.isEmpty() || age.isEmpty() || grade.isEmpty()) {
+                Toast.makeText(getApplicationContext(),
+                        "All fields are mandatory >:(",
+                        Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            // Group should follow a specific pattern of "AAAA-00-00"
+            if (! group.matches("[A-ZА-Я]{4}-[0-9]{2}-[0-9]{2}")) {
+                // Yell at user otherwise
+                Toast.makeText(getApplicationContext(),
+                        "Group doesn't match pattern \"AAAA-00-00\"",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String finalGrade;
+            // Check grade and do some tomfoolery
+            // (i dont like this way of doing multi-case single case, but oh well cant use higher jave)
+            switch (grade.toLowerCase()) {
+                case "5":
+                case "a":
+                case "otl":
+                case "otlichno":
+                case "отл":
+                case "отлично": {
+                    finalGrade = "2, don't be full of yourself >:(";
+                    break;
+                }
+
+                case "4":
+                case "b":
+                case "khor":
+                case "khorosho":
+                case "хор":
+                case "хорошо": {
+                    finalGrade = "4, good job :)";
+                    break;
+                }
+
+                case "3":
+                case "c":
+                case "udovl":
+                case "udovletvoritelno":
+                case "удовл":
+                case "удовлетворительно": {
+                    finalGrade = "3, slightly less good :)";
+                    break;
+                }
+
+                case "2":
+                case "f":
+                case "neud":
+                case "neudovletvoritelno":
+                case "неуд":
+                case "неудовлетворительно": {
+                    finalGrade = "2. You will now be expelled. Prepare.";
+                    break;
+                }
+
+                case "lario": {
+                    finalGrade = "5. Very good. You are a worthy disciple.\nAwait for operation 'Larioware 3'.";
+                    break;
+                }
+
+                default: {
+                    finalGrade = "2, voice your requests better next time >:(";
+                    break;
+                }
+            }
+
+            // Finally, switch activity and pass all the data
+            Intent validationIntent = new Intent(getApplicationContext(), ValidateActivity.class);
+            validationIntent.putExtra("fio", fio);
+            validationIntent.putExtra("group", group);
+            validationIntent.putExtra("age", age);
+            validationIntent.putExtra("grade", finalGrade);
+
+            validationIntent.putExtra("Lario", finalGrade.contains("5. Very good."));
+
+            startActivity(validationIntent);
         });
     }
 
