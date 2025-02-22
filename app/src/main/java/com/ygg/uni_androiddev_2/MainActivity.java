@@ -14,8 +14,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.util.Map;
-
 public class MainActivity extends AppCompatActivity {
     private static final String APP_TAG = "Larioware2";
 
@@ -32,16 +30,35 @@ public class MainActivity extends AppCompatActivity {
 
         Log.w(APP_TAG, "Larioware 2 initialized; prepare for Lario");
 
+        // View stuff
         final Button valButton = findViewById(R.id.main_button);
+
         final EditText input_fio = findViewById(R.id.main_input_fio);
         final EditText input_group = findViewById(R.id.main_input_group);
         final EditText input_age = findViewById(R.id.main_input_age);
         final EditText input_grade = findViewById(R.id.main_input_grade);
+
+        // Button click processing
         valButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final String fio = input_fio.getText().toString();
+                final String group = input_group.getText().toString();
+                final String age = input_age.getText().toString();
+                final String grade = input_grade.getText().toString();
+
+                Log.d(APP_TAG, "fio=" + fio + " group=" + group + " age=" + age + " grade=" + grade);
+
+                // Make sure all fields are filled
+                if (fio.isEmpty() || group.isEmpty() || age.isEmpty() || grade.isEmpty()) {
+                    Toast.makeText(getApplicationContext(),
+                            "All fields are mandatory >:(",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 // Group should follow a specific pattern of "AAAA-00-00"
-                if (! input_group.getText().toString().matches("[A-ZА-Я]\4-[0-9]\2-[0-9]\2")) {
+                if (! group.matches("[A-ZА-Я]{4}-[0-9]{2}-[0-9]{2}")) {
                     // Yell at user otherwise
                     Toast.makeText(getApplicationContext(),
                             "Group doesn't match pattern \"AAAA-00-00\"",
@@ -52,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 String finalGrade;
                 // Check grade and do some tomfoolery
                 // (i dont like this way of doing multi-case single case, but oh well cant use higher jave)
-                switch (input_grade.getText().toString().toLowerCase()) {
+                switch (grade.toLowerCase()) {
                     case "5":
                     case "a":
                     case "otl":
@@ -106,9 +123,9 @@ public class MainActivity extends AppCompatActivity {
 
                 // Finally, switch activity and pass all the data
                 Intent validationIntent = new Intent(getApplicationContext(), ValidateActivity.class);
-                validationIntent.putExtra("fio", input_fio.getText().toString());
-                validationIntent.putExtra("group", input_group.getText().toString());
-                validationIntent.putExtra("age", input_age.getText().toString());
+                validationIntent.putExtra("fio", fio);
+                validationIntent.putExtra("group", group);
+                validationIntent.putExtra("age", age);
                 validationIntent.putExtra("grade", finalGrade);
 
                 validationIntent.putExtra("Lario", finalGrade.contains("5. Very good."));
