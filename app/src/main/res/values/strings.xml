@@ -7,6 +7,7 @@
     <string name="main_hint_age">Your age</string>
     <string name="main_hint_grade">Your desired grade</string>
     <string name="main_button">Validate and proceed</string>
+    <string name="main_button2">Declarative (bad)</string>
 
     <string name="val_text_welcome">Welcome, %1$s from %2$s!</string>
     <string name="val_text_age">You are %1$s year(s) old, lol old :)</string>
